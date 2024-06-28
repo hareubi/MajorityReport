@@ -1,6 +1,7 @@
 <script>
 	import Header from './Header.svelte';
 	import './styles.css';
+	import github from '$lib/images/github.svg';
 </script>
 
 <div class="app">
@@ -11,9 +12,16 @@
 	</main>
 
 	<footer>
-		<p>visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to learn SvelteKit</p>
+		<p>meow</p>
+		<div class="corner">
+			<a href="https://github.com/sveltejs/kit">
+				<img src={github} alt="GitHub" />
+			</a>
+		</div>
 	</footer>
 </div>
+
+
 
 <style>
 	.app {
@@ -49,5 +57,23 @@
 		footer {
 			padding: 12px 0;
 		}
+	}
+	
+	.corner {
+		width: 3em;
+		height: 3em;
+	}
+
+	.corner a {
+		width: 100%;
+		height: 100%;
+		position:fixed;
+		left: 95%;
+	}
+
+	.corner img {
+		width: 2em;
+		height: 2em;
+		object-fit: contain;
 	}
 </style>
