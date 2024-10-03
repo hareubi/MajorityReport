@@ -2,7 +2,7 @@
 	"name": "majorityreport",
 	"version": "0.0.1",
 	"scripts": {
-		"dev": "vite dev",
+		"start": "vite dev",
 		"build": "vite build",
 		"preview": "vite preview",
 		"test": "npm run test:integration && npm run test:unit",
