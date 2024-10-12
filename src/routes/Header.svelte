@@ -1,7 +1,6 @@
 <script>
 	import { page } from '$app/stores';
 	const items = [{text: 'Home', link: "/"},
-                    {text: 'Sverdle', link: "/sverdle"},
                     {text: 'about', link: "/about"},
 					{text: 'board', link: "/board"},
 					{text: 'plan', link: "/plan"}
