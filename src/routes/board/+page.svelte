@@ -1,10 +1,14 @@
 <script>
 	import Cardlist from './cardlist.svelte';
-	export let data
+	import {CardData} from '../../Shared/Agile';
 </script>
 
 <ul>
+    {#await CardData()}
+		Loading Agile Board...
+	{:then data}
     <Cardlist data = {data} />
+    {/await}
 </ul>
 
 <style>
