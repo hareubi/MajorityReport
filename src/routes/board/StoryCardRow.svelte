@@ -1,5 +1,5 @@
 <script>
-    import Card from './card.svelte'
+    import Card from './StoryCardColumn.svelte'
     export let data
 </script>
 
@@ -31,7 +31,7 @@
     }
     .column {
         min-width: 25ch;
-        flex-direction: column-;
+        flex-direction: column;
     }
     h2 {
         margin-block-start: 0;
