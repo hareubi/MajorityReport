@@ -1,6 +1,6 @@
 <script>
-	import Cardlist from './cardlist.svelte';
-	import {CardData} from '../../Shared/Agile';
+	import Cardlist from './StoryCardRow.svelte';
+	import {CardData} from '../../Shared/Board';
 </script>
 
 <ul>

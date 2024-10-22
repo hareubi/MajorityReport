@@ -46,8 +46,8 @@ export const CardData =  async() => {
 				title: 'Code DND Example'
 			},
 			{
-				row: 1,
-				column: 1,
+				row: 2,
+				column: 2,
 				id: 'a',
 				title: 'do something'
 			},
