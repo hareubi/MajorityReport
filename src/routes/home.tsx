@@ -1,3 +1,13 @@
+import { auth } from "../firebase";
+
 export default function Profile() {
-  return <h1>hi</h1>;
+  function logOut(): void {
+    auth.signOut();
+  }
+
+  return (
+    <h1>
+      <button onClick={logOut}>logout</button>
+    </h1>
+  );
 }
