@@ -1,6 +1,8 @@
 import {
   createUserWithEmailAndPassword,
+  GithubAuthProvider,
   signInWithEmailAndPassword,
+  signInWithPopup,
   updateProfile,
 } from "firebase/auth";
 import { useState } from "react";
@@ -19,6 +21,7 @@ const Wrapper = styled.div`
 `;
 const Form = styled.form`
   margin-top: 50px;
+  margin-bottom: 10px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -33,12 +36,6 @@ const Input = styled.input`
   border-right: 4px inset #002b36;
   width: 100%;
   font-size: 16px;
-  &[type="submit"] {
-    cursor: pointer;
-    &:hover {
-      opacity: 0.8;
-    }
-  }
 `;
 const TextButton = styled.a`
   margin-left: auto;
@@ -49,6 +46,22 @@ const Title = styled.h1`
 const Error = styled.span`
   font-weight: 600;
   color: #dc322f;
+`;
+const Button = styled.button`
+  padding: 10px 20px;
+  border-radius: 15px;
+  border-top: 1px inset #93a1a1;
+  border-left: 1px inset #93a1a1;
+  border-bottom: 4px inset #002b36;
+  border-right: 4px inset #002b36;
+  font-size: 16px;
+  cursor: pointer;
+  &:active {
+    border-top: 2px inset #002b36;
+    border-left: 2px inset#002b36;
+    border-bottom: 1px inset #93a1a1;
+    border-right: 1px inset #93a1a1;
+  }
 `;
 
 export default function CreateAccount() {
@@ -129,19 +142,35 @@ export default function CreateAccount() {
           type="password"
           required
         />
-        <Input
-          type="submit"
-          value={isLoading ? "Loading" : isSignIn ? "Login" : "CreateAccount"}
-        />
-        <TextButton
-          onClick={() => {
-            setSignIn(!isSignIn);
-          }}
-        >
-          {isSignIn ? "Sign up" : "Sign in"}
-        </TextButton>
-        {error !== "" ? <Error>{error}</Error> : null}
+        <Button>
+          {isLoading ? "Loading" : isSignIn ? "Login" : "CreateAccount"}
+        </Button>
+        <ul style={{ marginLeft: "auto", flexDirection: "row-reverse" }}>
+          {error !== "" ? <Error>{error}</Error> : null}
+          <TextButton
+            onClick={() => {
+              setSignIn(!isSignIn);
+            }}
+          >
+            {isSignIn ? "Sign up" : "Sign in"}
+          </TextButton>
+        </ul>
       </Form>
+      <Button
+        style={{ padding: "5px" }}
+        onClick={async () => {
+          try {
+            const provider = new GithubAuthProvider();
+            await signInWithPopup(auth, provider);
+          } catch (error) {
+            if (error instanceof FirebaseError) setError(error.message);
+          }
+          navigate("/");
+        }}
+      >
+        {"Login With Github "}
+        <img src="github-mark.svg" height="16px" />
+      </Button>
     </Wrapper>
   );
 }
