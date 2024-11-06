@@ -1,6 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Layout from "./components/layout";
-import Home from "./routes/home";
+import Home from "./routes/Home/home";
 import CreateAccount from "./routes/join";
 import { createGlobalStyle } from "styled-components";
 import reset from "styled-reset";
@@ -9,7 +9,7 @@ import Loading from "./components/loading";
 import { auth } from "./firebase";
 import styled from "styled-components";
 import ProtectedRoute from "./components/protected-route";
-import Profile from "./routes/home";
+import Profile from "./routes/Home/home";
 
 const GlobalStyle = createGlobalStyle`
 ${reset};
