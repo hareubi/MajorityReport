@@ -13,9 +13,7 @@ function ColorSelect(color: { color: string }) {
     ></div>
   );
 }
-const SizeBox = styled.div`
-  width: 300px;
-`;
+
 const ColorInput = styled.div`
   width: 60px;
   height: 60px;
@@ -49,7 +47,7 @@ const SmallButton = styled.button`
 
 export default function Draw() {
   return (
-    <SizeBox>
+    <div>
       <canvas
         id="main-canvas"
         height={200}
@@ -75,6 +73,6 @@ export default function Draw() {
       <input id="text-input" type="text" />
 
       <script src="draw.js"></script>
-    </SizeBox>
+    </div>
   );
 }
