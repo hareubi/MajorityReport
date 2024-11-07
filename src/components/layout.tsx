@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 const Wrapper = styled.div`
   display: grid;
   gap: 20px;
-  grid-template-columns: 1fr 9fr;
+  grid-template-columns: 0fr 1fr;
   padding: 25px 0px;
   width: 100%;
 `;
@@ -15,7 +15,7 @@ const Menu = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 20px;
-  max-width: 100px;
+  width: 70px;
 `;
 const MenuItem = styled.div`
   cursor: pointer;
@@ -23,8 +23,7 @@ const MenuItem = styled.div`
   align-items: center;
   justify-content: center;
   border: 2px solid black;
-  min-width: 50px;
-  max-width: 100px;
+  width: 50px;
   border-radius: 30%;
   border-color: #6c71c4;
   &.logOut {
@@ -44,7 +43,8 @@ export default function Layout() {
     <>
       <Wrapper>
         <Menu>
-          <Link to="/">
+          ProjectA
+          <Link to="">
             <MenuItem>
               <svg
                 fill="#6c71c4"
@@ -61,7 +61,7 @@ export default function Layout() {
               </svg>
             </MenuItem>
           </Link>
-          <Link to="/profile">
+          <Link to="profile">
             <MenuItem>
               <svg
                 fill="#6c71c4"
@@ -77,7 +77,7 @@ export default function Layout() {
               </svg>
             </MenuItem>
           </Link>
-          <Link to="/communicate">
+          <Link to="communicate">
             <MenuItem>
               <svg
                 fill="#6c71c4"
@@ -90,7 +90,7 @@ export default function Layout() {
               </svg>
             </MenuItem>
           </Link>
-          <Link to="/board">
+          <Link to="board">
             <MenuItem>
               <svg
                 fill="#6c71c4"
@@ -107,7 +107,7 @@ export default function Layout() {
               </svg>
             </MenuItem>
           </Link>
-          <Link to="/issues">
+          <Link to="issues">
             <MenuItem>
               <svg
                 fill="#6c71c4"

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { auth } from "../../firebase";
 import { todaysQuote } from "./quotes.ts";
 
-export default function Profile() {
+export default function Home() {
   const [time, setTime] = useState("");
   useEffect(() => {
     setInterval(() => {
