@@ -1,4 +1,4 @@
-import { Navigate, Outlet, useNavigate } from "react-router";
+import { Outlet, useNavigate } from "react-router";
 import { auth } from "../firebase";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
@@ -15,6 +15,7 @@ const Menu = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 20px;
+  max-width: 100px;
 `;
 const MenuItem = styled.div`
   cursor: pointer;
@@ -32,7 +33,7 @@ const MenuItem = styled.div`
 `;
 export default function Layout() {
   const navigate = useNavigate();
-  async function logOut(): void {
+  async function logOut(): Promise<void> {
     if (confirm("Logout?")) {
       await auth.signOut();
 
