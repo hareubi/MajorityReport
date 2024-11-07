@@ -1,6 +1,7 @@
 import { styled } from "styled-components";
 import PostIssue from "./issue-form";
 import { useState } from "react";
+import IssueList from "./issue-list";
 
 const CollapseToggleButton = styled.button`
   height: 50px;
@@ -25,15 +26,15 @@ export default function Issues() {
       >
         <svg
           fill="none"
-          stroke-width="1.5"
+          strokeWidth={1.5}
           stroke="currentColor"
           viewBox="0 0 24 24"
           xmlns="http://www.w3.org/2000/svg"
           aria-hidden="true"
         >
           <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
           ></path>
         </svg>
@@ -42,7 +43,7 @@ export default function Issues() {
         <div hidden={!isFormOpen}>
           <PostIssue />
         </div>
-        aaaaaaaaaaaaaaaaaa
+        <IssueList />
       </Wrapper>
     </div>
   );

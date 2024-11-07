@@ -51,7 +51,7 @@ export default function Draw() {
       <canvas
         id="main-canvas"
         height={200}
-        width={300}
+        width={400}
         style={{ border: "2px solid #268bd2", borderRadius: 10 }}
       />
       <input type="range" min="1" max="5" step="0.5" id="width-input" />

@@ -13,6 +13,7 @@ import ProtectedRoute from "./components/protected-route";
 import Profile from "./routes/profile";
 import Communicate from "./routes/communicate";
 import Board from "./routes/board";
+import Planning from "./routes/planning";
 
 const GlobalStyle = createGlobalStyle`
 ${reset};
@@ -88,6 +89,10 @@ const router = createBrowserRouter([
       {
         path: "issues",
         element: <Issues />,
+      },
+      {
+        path: "planning",
+        element: <Planning />,
       },
     ],
   },
