@@ -160,7 +160,7 @@ export default function Draw(onImageAdd: {
         min="1"
         max="5"
         step="0.5"
-        onVolumeChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
           if (context == null) return;
           context.lineWidth = Number(event.target.value);
         }}
@@ -181,14 +181,8 @@ export default function Draw(onImageAdd: {
       <SmallButton onClick={eraserMode}>Erase</SmallButton>
       <SmallButton onClick={resetCanvas}>Reset</SmallButton>
       <SmallButton onClick={saveImage}>Add</SmallButton>
+      <input type="file" accept="image/*" onChange={onFileChange} />
       <input
-        id="file-input"
-        type="file"
-        accept="image/*"
-        onChange={onFileChange}
-      />
-      <input
-        id="text-input"
         type="text"
         onChange={(event) => {
           setText(event?.target.value);

@@ -10,10 +10,8 @@ const CollapseToggleButton = styled.button`
 `;
 const Wrapper = styled.div`
   display: grid;
-  grid-template-columns: 0fr 1fr;
-  gap: 20px;
-  padding: 12.5px 0px;
-  width: 100%;
+  gap: 50px;
+  grid-template-columns: 1fr 5fr;
 `;
 export default function Issues() {
   const [isFormOpen, setFromOpen] = useState(true);

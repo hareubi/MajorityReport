@@ -8,8 +8,8 @@ const Wrapper = styled.div`
   gap: 20px;
   grid-template-columns: 0fr 1fr;
   padding: 25px 0px;
-  height: 100%;
   width: 100%;
+  height: 100%;
 `;
 const Menu = styled.div`
   display: flex;

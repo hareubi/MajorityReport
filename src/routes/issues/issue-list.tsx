@@ -1,6 +1,14 @@
-import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  limit,
+  onSnapshot,
+  orderBy,
+  query,
+} from "firebase/firestore";
 import { styled } from "styled-components";
-import { db } from "../../firebase";
+import { auth, db } from "../../firebase";
 import { useEffect, useState } from "react";
 import { Unsubscribe } from "firebase/auth";
 
@@ -15,10 +23,11 @@ interface Issue {
 }
 const IssueWrapper = styled.div`
   display: flex;
-  flex-direction: column;
   gap: 10px;
-  height: 100vh;
+  flex-direction: column;
   overflow-y: scroll;
+  scroll-behavior: smooth;
+  height: calc(100vh - 200px);
 `;
 export default function IssueList() {
   let unSubscribe: Unsubscribe | null = null;
@@ -26,7 +35,8 @@ export default function IssueList() {
   const fetchIssues = async () => {
     const issueQuery = query(
       collection(db, "issues"),
-      orderBy("creationTime", "desc")
+      orderBy("creationTime", "desc"),
+      limit(25)
     );
     unSubscribe = await onSnapshot(issueQuery, (snapshot) => {
       const newIssues = snapshot.docs.map((doc) => {
@@ -81,7 +91,15 @@ const File = styled.img`
   border-radius: 10px;
 `;
 const CreationTime = styled.div``;
-export function Issue({ name, text, creationTime, username, file }: Issue) {
+export function Issue({
+  name,
+  text,
+  creationTime,
+  username,
+  file,
+  uid,
+  id,
+}: Issue) {
   return (
     <Column>
       <Name>{name}</Name>
@@ -89,6 +107,15 @@ export function Issue({ name, text, creationTime, username, file }: Issue) {
       <Username>{username}</Username>
       <Description>{text}</Description>
       {file ? <File src={file} /> : null}
+      {auth.currentUser?.uid === uid.toString() ? (
+        <button
+          onClick={() => {
+            deleteDoc(doc(db, "issues", id));
+          }}
+        >
+          Delete
+        </button>
+      ) : null}
     </Column>
   );
 }

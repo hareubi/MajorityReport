@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Layout from "./components/layout";
 import Home from "./routes/Home/home";
-import Issues from "./routes/issue/issues";
+import Issues from "./routes/issues/issues";
 import CreateAccount from "./routes/join";
 import { createGlobalStyle } from "styled-components";
 import reset from "styled-reset";
@@ -10,7 +10,7 @@ import Loading from "./components/loading";
 import { auth } from "./firebase";
 import styled from "styled-components";
 import ProtectedRoute from "./components/protected-route";
-import Profile from "./routes/profile";
+import Profile from "./routes/profile/profile";
 import Communicate from "./routes/communicate";
 import Board from "./routes/board";
 import Planning from "./routes/planning";

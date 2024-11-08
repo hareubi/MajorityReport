@@ -68,7 +68,7 @@ export default function PostIssue() {
     if (files && files.length === 1) {
       const reader = new FileReader();
       reader.readAsDataURL(files[0]);
-      reader.onload = async () => {
+      reader.onload = () => {
         setFile(reader.result as string | null);
       };
     }
