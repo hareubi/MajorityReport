@@ -43,7 +43,7 @@ export default function Layout() {
     <>
       <Wrapper>
         <Menu>
-          ProjectA
+          <Link to="projects">ProjectA</Link>
           <Link to="">
             <MenuItem>
               <svg

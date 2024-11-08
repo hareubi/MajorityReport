@@ -1,12 +1,9 @@
 import styled from "styled-components";
 import Draw from "../../components/draw";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { auth, db } from "../../firebase";
 import { updateProfile } from "firebase/auth";
-import MyEditor from "./avatar-editor";
 import {
-  addDoc,
-  collection,
   doc,
   DocumentData,
   getDoc,

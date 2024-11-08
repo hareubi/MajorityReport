@@ -14,6 +14,7 @@ import Profile from "./routes/profile/profile";
 import Communicate from "./routes/communicate";
 import Board from "./routes/board";
 import Planning from "./routes/planning";
+import ProjectSelector from "./routes/projects";
 
 const GlobalStyle = createGlobalStyle`
 ${reset};
@@ -70,6 +71,10 @@ const router = createBrowserRouter([
       </ProtectedRoute>
     ),
     children: [
+      {
+        path: "projects",
+        element: <ProjectSelector />,
+      },
       {
         path: "",
         element: <Home />,

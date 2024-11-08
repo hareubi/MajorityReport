@@ -7,6 +7,10 @@ export default function Home() {
   const [time, setTime] = useState("");
   const [timer, setTimer] = useState<NodeJS.Timeout>();
   if (timer == null) {
+    const hour = String(new Date().getHours()).padStart(2, "0");
+    const minute = String(new Date().getMinutes()).padStart(2, "0");
+    const second = String(new Date().getSeconds()).padStart(2, "0");
+    setTime(`${hour}:${minute}:${second}`);
     setTimer(
       setInterval(() => {
         const hour = String(new Date().getHours()).padStart(2, "0");
