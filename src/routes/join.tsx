@@ -39,6 +39,10 @@ const Input = styled.input`
 `;
 const TextButton = styled.a`
   margin-left: auto;
+  margin-right: 0px;
+  color: #6c71c4;
+  font-size: 20px;
+  font-weight: 900;
 `;
 const Title = styled.h1`
   font-size: 42px;
@@ -72,10 +76,10 @@ export default function CreateAccount() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {
       target: { name, value },
-    } = e;
+    } = event;
     if (name === "name") {
       setName(value);
     } else if (name === "email") {
@@ -84,8 +88,8 @@ export default function CreateAccount() {
       setPassword(value);
     }
   };
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     if (email === "" || password === "" || isLoading) return;
     try {
       setLoading(true);
@@ -102,11 +106,16 @@ export default function CreateAccount() {
         });
       }
       navigate("/");
-    } catch (e) {
-      if (e instanceof FirebaseError) {
-        setError(e.message);
-        if (e.message === "Firebase: Error (auth/invalid-credential).")
-          setSignIn(false);
+    } catch (error) {
+      if (error instanceof FirebaseError) {
+        setError(error.message);
+        switch (error.message) {
+          case "Firebase: Error (auth/invalid-credential).": {
+            setError(
+              "Invaild Password. if you dont have account, create one! "
+            );
+          }
+        }
       }
     } finally {
       setLoading(false);
@@ -152,7 +161,7 @@ export default function CreateAccount() {
               setSignIn(!isSignIn);
             }}
           >
-            {isSignIn ? "Sign up" : "Sign in"}
+            {isSignIn ? "Create Account" : "Login"}
           </TextButton>
         </ul>
       </Form>

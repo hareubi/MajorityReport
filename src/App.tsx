@@ -34,13 +34,13 @@ ${reset};
   border-radius: 15px;
   border-top: 1px inset #93a1a1;
   border-left: 1px inset #93a1a1;
-  border-bottom: 2px inset #002b36;
-  border-right: 2px inset #002b36;
+  border-bottom: 4px inset #002b36;
+  border-right: 4px inset #002b36;
   font-size: 16px;
   cursor: pointer;
    &:active {
-      border-top: 1px inset #002b36;
-      border-left: 1px inset#002b36;
+      border-top: 3px inset #002b36;
+      border-left: 3px inset#002b36;
       border-bottom: 1px inset #93a1a1;
       border-right: 1px inset #93a1a1;
     }

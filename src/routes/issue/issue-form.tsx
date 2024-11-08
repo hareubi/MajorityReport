@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Draw from "../../components/Draw/draw.tsx";
+import Draw from "../../components/draw.tsx";
 import { useState } from "react";
 import { addDoc, collection, updateDoc } from "firebase/firestore";
 import { auth, db } from "../../firebase.ts";
@@ -16,23 +16,42 @@ const TextArea = styled.textarea`
   font-size: 16px;
   background-color: #eee8d5;
 `;
+const ImagePreview = styled.img`
+  width: 400px;
+`;
 const AttachFileInput = styled.input`
   display: none;
 `;
 const AttachFileButton = styled.label`
-  padding: 15px;
-  border-radius: 10px;
+  width: 150px;
+  padding: 10px 0px;
   text-align: center;
-  border: 1px solid;
-  font-size: 14px;
-  font-weight: 500;
+  background-color: white;
+  border-radius: 15px;
+  border-top: 1px inset #93a1a1;
+  border-left: 1px inset #93a1a1;
+  border-bottom: 4px inset #002b36;
+  border-right: 4px inset #002b36;
+  font-size: 16px;
+  cursor: pointer;
+  &:active {
+    border-top: 3px inset #002b36;
+    border-left: 3px inset#002b36;
+    border-bottom: 1px inset #93a1a1;
+    border-right: 1px inset #93a1a1;
+  }
 `;
+const Row = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+const DeleteButton = styled.button``;
 const SubmitButton = styled.button``;
 const DrawingArea = styled.div``;
 export default function PostIssue() {
   const [issueName, setIssueName] = useState("");
   const [issueText, setIssueText] = useState("");
-  const [file, setFile] = useState<File | null>(null);
+  const [file, setFile] = useState<string | null>(null);
   const [isUploading, setUploading] = useState(false);
   const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     switch (e.target.name) {
@@ -47,10 +66,14 @@ export default function PostIssue() {
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { files } = e.target ?? null;
     if (files && files.length === 1) {
-      setFile(files[0]);
+      const reader = new FileReader();
+      reader.readAsDataURL(files[0]);
+      reader.onload = async () => {
+        setFile(reader.result as string | null);
+      };
     }
   };
-  const onIssueSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const onIssueSubmit = async (e: React.FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const user = auth.currentUser;
     if (
@@ -69,18 +92,18 @@ export default function PostIssue() {
       uid: user.uid,
     });
     if (file) {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = async () => {
-        await updateDoc(doc, { file: reader?.result });
-      };
+      await updateDoc(doc, { file });
     }
     setIssueName("");
     setIssueText("");
     setUploading(false);
   };
   return (
-    <Form onSubmit={onIssueSubmit}>
+    <Form
+      onSubmit={(event) => {
+        event.preventDefault();
+      }}
+    >
       <TextArea
         placeholder="issue name"
         value={issueName}
@@ -93,17 +116,28 @@ export default function PostIssue() {
         onChange={onChange}
         name="issue-text"
       ></TextArea>
-      <AttachFileButton htmlFor="file">Add Image</AttachFileButton>
-      <AttachFileInput
-        type="file"
-        id="file"
-        accept="image/*"
-        onChange={onFileChange}
-      />
+      <ImagePreview src={file ?? ""} />
+
+      <Row>
+        <AttachFileButton htmlFor="file">Add Image</AttachFileButton>
+        <AttachFileInput
+          type="file"
+          id="file"
+          accept="image/*"
+          onChange={onFileChange}
+        />
+        <DeleteButton>Delete Image</DeleteButton>
+      </Row>
       <DrawingArea>
-        <Draw />
+        <Draw
+          onImageAdd={(image) => {
+            setFile(image);
+          }}
+        />
       </DrawingArea>
-      <SubmitButton>{isUploading ? "Uploading..." : "Submit"}</SubmitButton>
+      <SubmitButton onClick={onIssueSubmit}>
+        {isUploading ? "Uploading..." : "Submit"}
+      </SubmitButton>
     </Form>
   );
 }

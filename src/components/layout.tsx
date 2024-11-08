@@ -8,6 +8,7 @@ const Wrapper = styled.div`
   gap: 20px;
   grid-template-columns: 0fr 1fr;
   padding: 25px 0px;
+  height: 100%;
   width: 100%;
 `;
 const Menu = styled.div`
@@ -15,7 +16,6 @@ const Menu = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 20px;
-  width: 70px;
 `;
 const MenuItem = styled.div`
   cursor: pointer;

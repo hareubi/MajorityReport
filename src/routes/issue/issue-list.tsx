@@ -1,7 +1,8 @@
-import { collection, getDocs, orderBy, query } from "firebase/firestore";
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { styled } from "styled-components";
 import { db } from "../../firebase";
 import { useEffect, useState } from "react";
+import { Unsubscribe } from "firebase/auth";
 
 interface Issue {
   id: string;
@@ -13,37 +14,42 @@ interface Issue {
   file?: string;
 }
 const IssueWrapper = styled.div`
-  display: grid;
-  grid-template-columns: 3fr 1fr;
-  padding: 20px;
-  border: 1px solid #586e75;
-  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 100vh;
+  overflow-y: scroll;
 `;
 export default function IssueList() {
+  let unSubscribe: Unsubscribe | null = null;
   const [issues, setIssues] = useState<Issue[]>([]);
   const fetchIssues = async () => {
     const issueQuery = query(
       collection(db, "issues"),
       orderBy("creationTime", "desc")
     );
-    const snapshot = await getDocs(issueQuery);
-    const newIssues = snapshot.docs.map((doc) => {
-      const { name, text, creationTime, username, uid, file } = doc.data();
-      return {
-        id: doc.id,
-        name: name,
-        text: text,
-        creationTime: creationTime,
-        username: username,
-        uid: uid,
-        file: file,
-      };
+    unSubscribe = await onSnapshot(issueQuery, (snapshot) => {
+      const newIssues = snapshot.docs.map((doc) => {
+        const { name, text, creationTime, username, uid, file } = doc.data();
+        return {
+          id: doc.id,
+          name: name,
+          text: text,
+          creationTime: creationTime,
+          username: username,
+          uid: uid,
+          file: file,
+        };
+      });
+      setIssues(newIssues);
     });
-    setIssues(newIssues);
   };
   useEffect(() => {
     fetchIssues();
-  }, []);
+    return () => {
+      unSubscribe?.();
+    };
+  });
   return (
     <IssueWrapper>
       {issues.map((issue) => (
@@ -53,7 +59,10 @@ export default function IssueList() {
   );
 }
 
-const Column = styled.div``;
+const Column = styled.div`
+  border: 1px solid #586e75;
+  border-radius: 10px;
+`;
 const Username = styled.div`
   font-weight: 600;
   font-size: 18px;
