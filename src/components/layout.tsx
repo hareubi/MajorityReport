@@ -11,11 +11,15 @@ const Wrapper = styled.div`
   width: 100%;
   height: 100%;
 `;
+const SizedBox = styled.div`
+  width: 50px;
+`;
 const Menu = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 20px;
+  position: fixed;
 `;
 const MenuItem = styled.div`
   cursor: pointer;
@@ -42,6 +46,7 @@ export default function Layout() {
   return (
     <>
       <Wrapper>
+        <SizedBox />
         <Menu>
           <Link to="projects">ProjectA</Link>
           <Link to="">
