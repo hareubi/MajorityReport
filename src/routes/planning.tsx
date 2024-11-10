@@ -8,9 +8,9 @@ const Container = styled.div`
   padding: 20px;
 `;
 
-const Header = styled.header`
+const Header = styled.div`
   text-align: center;
-  margin-bottom: 20px;
+  background-color: white;
 `;
 
 const Title = styled.h1`
@@ -27,6 +27,7 @@ const CardOptions = styled.div`
   display: flex;
   gap: 10px;
   margin-bottom: 20px;
+  background-color: #bdbbbb;
 `;
 
 const Card = styled.div`
@@ -50,7 +51,10 @@ const Card = styled.div`
 
 const PlayerList = styled.div`
   text-align: left;
-  margin-top: 20px;
+  margin: 20px;
+  background-color: white;
+  min-width: 45vw;
+  min-height: 20vh;
 `;
 
 const PlayerTitle = styled.h2`
@@ -63,7 +67,7 @@ const Player = styled.li`
   margin: 5px 0;
 `;
 
-const SelectedCardDisplay = styled.div`
+const SelectedCardDisplay = styled.ul`
   margin-top: 20px;
   text-align: center;
 `;
@@ -96,20 +100,11 @@ export default function PlanningPoker() {
 
   return (
     <Container>
-      {/* Header */}
       <Header>
         <Title>Planning Poker</Title>
         <Subtitle>Select your estimate below</Subtitle>
       </Header>
 
-      {/* Card Options */}
-      <CardOptions>
-        {cards.map((card, index) => (
-          <Card key={index}>{card}</Card>
-        ))}
-      </CardOptions>
-
-      {/* Player List */}
       <PlayerList>
         <PlayerTitle>Players</PlayerTitle>
         <ul>
@@ -120,7 +115,12 @@ export default function PlanningPoker() {
         </ul>
       </PlayerList>
 
-      {/* Selected Card Display */}
+      <CardOptions>
+        {cards.map((card, index) => (
+          <Card key={index}>{card}</Card>
+        ))}
+      </CardOptions>
+
       <SelectedCardDisplay>
         <SelectedTitle>Your Selection</SelectedTitle>
         <SelectedPlaceholder>

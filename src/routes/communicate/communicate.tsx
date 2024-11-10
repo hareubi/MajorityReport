@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const Container = styled.div`
+const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -12,7 +12,7 @@ const Header = styled.h1`
   color: #333;
 `;
 
-const CommunityContainer = styled.div`
+const CommunityWrapper = styled.div`
   width: 100%;
   max-width: 600px;
   display: flex;
@@ -62,7 +62,6 @@ const JoinButton = styled.button`
   font-size: 0.9em;
   background-color: #859900;
   color: white;
-  border: none;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
@@ -108,7 +107,7 @@ export default function Communicate() {
   ];
 
   return (
-    <Container>
+    <Wrapper>
       <SubmitButton>
         <svg
           fill="none"
@@ -126,7 +125,7 @@ export default function Communicate() {
         </svg>
       </SubmitButton>
       <Header>Communities</Header>
-      <CommunityContainer>
+      <CommunityWrapper>
         {communities.map((community) => (
           <CommunityCard key={community.id}>
             <CommunityTitle>{community.name}</CommunityTitle>
@@ -137,7 +136,7 @@ export default function Communicate() {
             </CommunityInfo>
           </CommunityCard>
         ))}
-      </CommunityContainer>
-    </Container>
+      </CommunityWrapper>
+    </Wrapper>
   );
 }

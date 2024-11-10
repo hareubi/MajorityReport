@@ -2,8 +2,6 @@ import {
   collection,
   deleteDoc,
   doc,
-  DocumentData,
-  getDoc,
   limit,
   onSnapshot,
   orderBy,
@@ -71,18 +69,17 @@ export default function IssueList() {
 }
 
 const Column = styled.div`
-  border: 1px solid #586e75;
-  border-radius: 10px;
+  background-color: white;
 `;
-const Username = styled.div`
+const Username = styled.h1`
   font-weight: 600;
   font-size: 18px;
 `;
-const Name = styled.div`
+const Name = styled.h1`
   font-weight: 600;
   font-size: 30px;
 `;
-const Description = styled.div`
+const Description = styled.h1`
   margin: 10px 0px;
   font-size: 18px;
 `;
@@ -91,7 +88,7 @@ const File = styled.img`
   height: 100px;
   border-radius: 10px;
 `;
-const CreationTime = styled.div``;
+const CreationTime = styled.h1``;
 export function Issue({
   name,
   text,

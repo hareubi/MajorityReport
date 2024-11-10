@@ -7,6 +7,8 @@ import styled from "styled-components";
 const HomeWrapper = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 10px;
 `;
 
 export default function Home() {
@@ -27,20 +29,27 @@ export default function Home() {
     );
   }
   return (
-    <HomeWrapper>
-      <h2 id="clock">
-        {time} welcome, {auth.currentUser?.displayName}
-      </h2>
-      <img src={auth.currentUser?.photoURL as string} />
-      <div>
-        <IssueList />
-      </div>
+    <ul>
+      <HomeWrapper>
+        <div>
+          <h2>
+            {time} welcome, {auth.currentUser?.displayName}
+            <img src={auth.currentUser?.photoURL as string} />
+          </h2>
+        </div>
+        <div></div>
+        <div>
+          <IssueList />
+        </div>
 
-      <Board />
-      <footer>
-        <h1>"{todaysQuote.quote}"</h1>
-        <h1>-{todaysQuote.author}-</h1>
-      </footer>
-    </HomeWrapper>
+        <Board />
+      </HomeWrapper>
+      <div>
+        <footer>
+          <h1>"{todaysQuote.quote}"</h1>
+          <h1>-{todaysQuote.author}-</h1>{" "}
+        </footer>
+      </div>
+    </ul>
   );
 }
