@@ -1,9 +1,9 @@
 import { Outlet, useNavigate } from "react-router";
-import { auth } from "../firebase";
+import { auth } from "./firebase";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
-const Wrapper = styled.div`
+const Wrapper = styled.ul`
   display: grid;
   gap: 20px;
   grid-template-columns: 0fr 1fr;
@@ -11,17 +11,19 @@ const Wrapper = styled.div`
   width: 100%;
   height: 100%;
 `;
-const SizedBox = styled.div`
-  width: 50px;
+const SizedBox = styled.a`
+  width: 90px;
 `;
 const Menu = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 20px;
+  margin-left: 15px;
+  margin-top: 5px;
   position: fixed;
 `;
-const MenuItem = styled.div`
+const MenuItem = styled.ul`
   cursor: pointer;
   display: flex;
   align-items: center;

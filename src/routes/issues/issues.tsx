@@ -7,14 +7,13 @@ const CollapseToggleButton = styled.button`
   height: 50px;
   width: 50px;
   padding: 0;
+  margin-bottom: 10px;
 `;
-const Wrapper = styled.div`
-  display: grid;
-  gap: 50px;
-  grid-template-columns: 1fr 5fr;
+const IssuesFormWrapper = styled.div`
+  background-color: white;
 `;
 export default function Issues() {
-  const [isFormOpen, setFromOpen] = useState(true);
+  const [isFormOpen, setFromOpen] = useState(false);
   return (
     <div>
       <CollapseToggleButton
@@ -37,12 +36,12 @@ export default function Issues() {
           ></path>
         </svg>
       </CollapseToggleButton>
-      <Wrapper>
-        <div hidden={!isFormOpen}>
-          <PostIssue />
-        </div>
+      <IssuesFormWrapper hidden={!isFormOpen}>
+        <PostIssue />
+      </IssuesFormWrapper>
+      <ul hidden={isFormOpen}>
         <IssueList />
-      </Wrapper>
+      </ul>
     </div>
   );
 }

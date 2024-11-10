@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Draw from "../../components/draw";
 import { useState } from "react";
-import { auth, db } from "../../firebase";
+import { auth, db } from "../../components/firebase";
 import { updateProfile } from "firebase/auth";
 import {
   doc,
@@ -14,11 +14,11 @@ import {
 const ProfileWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: start;
-  width: 400px;
+  align-items: center;
+  width: 100%;
   gap: 15px;
 `;
-const Row = styled.div`
+const Row = styled.ul`
   display: flex;
   flex-direction: row;
   gap: 5px;
@@ -30,6 +30,7 @@ const SubmitButton = styled.button`
   height: 50px;
   width: 50px;
   padding: 0px;
+  align-self: start;
 `;
 const ProfileImage = styled.img`
   width: 200px;
@@ -76,14 +77,6 @@ export default function Profile() {
   const onUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUserName(event.target.value);
   };
-  const onUserprofileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files === null) return;
-    const reader = new FileReader();
-    reader.readAsDataURL(event.target.files[0]);
-    reader.onload = () => {
-      setImage(reader.result as string);
-    };
-  };
   return (
     <ProfileWrapper>
       <SubmitButton onClick={onSubmit}>
@@ -110,13 +103,12 @@ export default function Profile() {
           onChange={onUsernameChange}
           value={userName ?? ""}
         />
-        <input type="file" accept="image/*" onChange={onUserprofileChange} />
         <button
           onClick={() => {
             setImage(null);
           }}
         >
-          Delete
+          Reset
         </button>
       </Row>
       <UserID>UID: {auth.currentUser?.uid}</UserID>

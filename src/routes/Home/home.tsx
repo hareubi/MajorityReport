@@ -1,7 +1,13 @@
 import { useState } from "react";
-import { auth } from "../../firebase";
+import { auth } from "../../components/firebase.ts";
 import { todaysQuote } from "./quotes.ts";
 import IssueList from "../issues/issue-list.tsx";
+import Board from "../board/board.tsx";
+import styled from "styled-components";
+const HomeWrapper = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+`;
 
 export default function Home() {
   const [time, setTime] = useState("");
@@ -21,12 +27,20 @@ export default function Home() {
     );
   }
   return (
-    <ul>
-      <h2 id="clock">{time}</h2>
-      <h1 id="welcome">welcome, {auth.currentUser?.displayName}</h1>
-      <IssueList></IssueList>
-      <span>{todaysQuote.quote}</span>
-      <span>{todaysQuote.author}</span>
-    </ul>
+    <HomeWrapper>
+      <h2 id="clock">
+        {time} welcome, {auth.currentUser?.displayName}
+      </h2>
+      <img src={auth.currentUser?.photoURL as string} />
+      <div>
+        <IssueList />
+      </div>
+
+      <Board />
+      <footer>
+        <h1>"{todaysQuote.quote}"</h1>
+        <h1>-{todaysQuote.author}-</h1>
+      </footer>
+    </HomeWrapper>
   );
 }

@@ -7,7 +7,7 @@ import {
 } from "firebase/auth";
 import { useState } from "react";
 import styled from "styled-components";
-import { auth } from "../firebase";
+import { auth } from "../../components/firebase";
 import { useNavigate } from "react-router-dom";
 import { FirebaseError } from "firebase/app";
 
@@ -16,8 +16,8 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 420px;
-  padding: 50px 0px;
+  width: 490px;
+  padding: 50px 25px;
 `;
 const Form = styled.form`
   margin-top: 50px;
@@ -123,7 +123,7 @@ export default function CreateAccount() {
   };
   return (
     <Wrapper>
-      <Title>Join 𝕏</Title>
+      <Title>Majority Report</Title>
       <Form onSubmit={onSubmit}>
         {isSignIn ? null : (
           <Input

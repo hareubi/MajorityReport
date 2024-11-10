@@ -2,17 +2,17 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Layout from "./components/layout";
 import Home from "./routes/Home/home";
 import Issues from "./routes/issues/issues";
-import CreateAccount from "./routes/join";
+import CreateAccount from "./routes/join/join";
 import { createGlobalStyle } from "styled-components";
 import reset from "styled-reset";
 import { useEffect, useState } from "react";
 import Loading from "./components/loading";
-import { auth } from "./firebase";
+import { auth } from "./components/firebase";
 import styled from "styled-components";
 import ProtectedRoute from "./components/protected-route";
 import Profile from "./routes/profile/profile";
-import Communicate from "./routes/communicate";
-import Board from "./routes/board";
+import Communicate from "./routes/communicate/communicate";
+import Board from "./routes/board/board";
 import Planning from "./routes/planning";
 import ProjectSelector from "./routes/projects";
 
@@ -24,7 +24,7 @@ ${reset};
 }
   body
 {
-  background-color: #fdf6e3;
+  background-color: #eee8d5;
   color:#002b36;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'SegoeUI'
   , Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue',
@@ -56,8 +56,14 @@ ${reset};
   width: 100%;
   font-size: 16px;
   }
+  div{
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+      background-color:#fdf6e3;
+      border-radius:10px;
+      padding:10px;
+  }
 `;
-const Wrapper = styled.div`
+const Wrapper = styled.ul`
   height: 100vh;
   display: flex;
   justify-content: center;

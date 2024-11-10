@@ -1,6 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-
+const DrawWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-color: white;
+`;
+const DrawRow = styled.ul`
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+`;
 const ColorInput = styled.div`
   width: 60px;
   height: 60px;
@@ -17,7 +27,6 @@ const ColorInput = styled.div`
 const ColorSpan = styled.span`
   display: flex;
   gap: 20px;
-  margin-bottom: 10px;
   background-color: white;
   padding: 10px 10px;
   border-radius: 15px;
@@ -26,11 +35,7 @@ const ColorSpan = styled.span`
   border-bottom: 4px inset #002b36;
   border-right: 4px inset #002b36;
 `;
-
-const SmallButton = styled.button`
-  padding-left: 19px;
-  padding-right: 19px;
-`;
+const SmallButton = styled.button``;
 
 export default function Draw(onImageAdd: {
   onImageAdd?: (params: string) => void;
@@ -143,7 +148,7 @@ export default function Draw(onImageAdd: {
     }
   };
   return (
-    <div>
+    <DrawWrapper>
       <canvas
         height={200}
         width={400}
@@ -174,20 +179,23 @@ export default function Draw(onImageAdd: {
         <ColorSelect color="red" />
         <ColorSelect color="red" />
       </ColorSpan>
+      <DrawRow>
+        <SmallButton onClick={changeMode}>
+          {isFilling ? "Draw" : "Fill"}
+        </SmallButton>
+        <SmallButton onClick={eraserMode}>Erase</SmallButton>
+        <SmallButton onClick={resetCanvas}>Reset</SmallButton>
+        <SmallButton onClick={saveImage}>Add</SmallButton>
+      </DrawRow>
 
-      <SmallButton onClick={changeMode}>
-        {isFilling ? "Draw" : "Fill"}
-      </SmallButton>
-      <SmallButton onClick={eraserMode}>Erase</SmallButton>
-      <SmallButton onClick={resetCanvas}>Reset</SmallButton>
-      <SmallButton onClick={saveImage}>Add</SmallButton>
       <input type="file" accept="image/*" onChange={onFileChange} />
       <input
         type="text"
+        placeholder="Write text and double click canvas"
         onChange={(event) => {
           setText(event?.target.value);
         }}
       />
-    </div>
+    </DrawWrapper>
   );
 }

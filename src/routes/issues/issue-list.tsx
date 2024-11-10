@@ -2,13 +2,15 @@ import {
   collection,
   deleteDoc,
   doc,
+  DocumentData,
+  getDoc,
   limit,
   onSnapshot,
   orderBy,
   query,
 } from "firebase/firestore";
 import { styled } from "styled-components";
-import { auth, db } from "../../firebase";
+import { auth, db } from "../../components/firebase";
 import { useEffect, useState } from "react";
 import { Unsubscribe } from "firebase/auth";
 
@@ -21,13 +23,11 @@ interface Issue {
   uid: number;
   file?: string;
 }
-const IssueWrapper = styled.div`
-  display: flex;
+const IssueWrapper = styled.ul`
   gap: 10px;
-  flex-direction: column;
-  overflow-y: scroll;
-  scroll-behavior: smooth;
-  height: calc(100vh - 200px);
+  margin: 0px 10px 0px 0px;
+  min-height: 10vh;
+  padding: 10px;
 `;
 export default function IssueList() {
   let unSubscribe: Unsubscribe | null = null;
@@ -51,7 +51,7 @@ export default function IssueList() {
           file: file,
         };
       });
-      setIssues(newIssues);
+      if (issues.toString() !== newIssues.toString()) setIssues(newIssues);
     });
   };
   useEffect(() => {
@@ -62,6 +62,7 @@ export default function IssueList() {
   });
   return (
     <IssueWrapper>
+      <h1>Issue List </h1>
       {issues.map((issue) => (
         <Issue key={issue.id} {...issue} />
       ))}

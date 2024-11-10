@@ -40,7 +40,7 @@ export default function ProjectSelector() {
 }
 
 const ProjectBackground = styled.button`
-  background-color: #eee8d5;
+  background-color: white;
   width: 400px;
   height: 300px;
   border: 4px outset #268bd2;
@@ -54,7 +54,7 @@ const ProjectBackground = styled.button`
     border: 4px outset #268bd2;
   }
 `;
-const ProjectColumn = styled.div`
+const ProjectColumn = styled.ul`
   display: flex;
   flex-direction: column;
 `;

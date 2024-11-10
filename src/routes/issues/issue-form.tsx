@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Draw from "../../components/draw.tsx";
 import { useState } from "react";
 import { addDoc, collection, updateDoc } from "firebase/firestore";
-import { auth, db } from "../../firebase.ts";
+import { auth, db } from "../../components/firebase.ts";
 
 const Form = styled.form`
   display: flex;
@@ -19,35 +19,12 @@ const TextArea = styled.textarea`
 const ImagePreview = styled.img`
   width: 400px;
 `;
-const AttachFileInput = styled.input`
-  display: none;
-`;
-const AttachFileButton = styled.label`
-  width: 150px;
-  padding: 10px 0px;
-  text-align: center;
-  background-color: white;
-  border-radius: 15px;
-  border-top: 1px inset #93a1a1;
-  border-left: 1px inset #93a1a1;
-  border-bottom: 4px inset #002b36;
-  border-right: 4px inset #002b36;
-  font-size: 16px;
-  cursor: pointer;
-  &:active {
-    border-top: 3px inset #002b36;
-    border-left: 3px inset#002b36;
-    border-bottom: 1px inset #93a1a1;
-    border-right: 1px inset #93a1a1;
-  }
-`;
-const Row = styled.div`
-  display: flex;
-  flex-direction: row;
-`;
 const DeleteButton = styled.button``;
-const SubmitButton = styled.button``;
-const DrawingArea = styled.div``;
+const SubmitButton = styled.button`
+  height: 50px;
+  width: 100px;
+  padding: 0px;
+`;
 export default function PostIssue() {
   const [issueName, setIssueName] = useState("");
   const [issueText, setIssueText] = useState("");
@@ -61,16 +38,6 @@ export default function PostIssue() {
       case "issue-text":
         setIssueText(e.target.value);
         break;
-    }
-  };
-  const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { files } = e.target ?? null;
-    if (files && files.length === 1) {
-      const reader = new FileReader();
-      reader.readAsDataURL(files[0]);
-      reader.onload = () => {
-        setFile(reader.result as string | null);
-      };
     }
   };
   const onIssueSubmit = async (e: React.FormEvent<HTMLButtonElement>) => {
@@ -104,6 +71,9 @@ export default function PostIssue() {
         event.preventDefault();
       }}
     >
+      <SubmitButton onClick={onIssueSubmit}>
+        {isUploading ? "Uploading..." : "Submit"}
+      </SubmitButton>
       <TextArea
         placeholder="issue name"
         value={issueName}
@@ -117,27 +87,13 @@ export default function PostIssue() {
         name="issue-text"
       ></TextArea>
       <ImagePreview src={file ?? ""} />
+      <DeleteButton>Delete Image</DeleteButton>
 
-      <Row>
-        <AttachFileButton htmlFor="file">Add Image</AttachFileButton>
-        <AttachFileInput
-          type="file"
-          id="file"
-          accept="image/*"
-          onChange={onFileChange}
-        />
-        <DeleteButton>Delete Image</DeleteButton>
-      </Row>
-      <DrawingArea>
-        <Draw
-          onImageAdd={(image) => {
-            setFile(image);
-          }}
-        />
-      </DrawingArea>
-      <SubmitButton onClick={onIssueSubmit}>
-        {isUploading ? "Uploading..." : "Submit"}
-      </SubmitButton>
+      <Draw
+        onImageAdd={(image) => {
+          setFile(image);
+        }}
+      />
     </Form>
   );
 }
