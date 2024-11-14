@@ -1,3 +1,4 @@
+import { useState } from "react";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
@@ -41,7 +42,7 @@ const CommunityTitle = styled.h2`
 
 const CommunityDescription = styled.p`
   font-size: 1em;
-  color: #666;
+  color: #696969;
   margin: 10px 0;
 `;
 
@@ -71,44 +72,39 @@ const JoinButton = styled.button`
   }
 `;
 
+const TransparentInput = styled.input`
+  border: none;
+`;
 export default function Communicate() {
-  // Sample data for communities
-  const communities = [
+  const [newCommunityName, setNewCommunityName] = useState("");
+  const [newCommunityDescription, setNewCommunityDescription] = useState("");
+  const [newCommunityLink, setNewCommunityLink] = useState("");
+  const [communities, setCommunities] = useState<
     {
-      id: 1,
-      name: "Tech Enthusiasts",
-      description: "A community for tech lovers and innovators.",
-      members: 1243,
-    },
-    {
-      id: 2,
-      name: "Book Lovers",
-      description: "Share and discuss your favorite books with others.",
-      members: 958,
-    },
-    {
-      id: 3,
-      name: "Fitness Buffs",
-      description: "A group for people who love fitness and health.",
-      members: 752,
-    },
-    {
-      id: 4,
-      name: "Art & Creativity",
-      description: "Where artists and creators come together.",
-      members: 678,
-    },
-    {
-      id: 5,
-      name: "Gamers United",
-      description: "A community for gamers to connect and compete.",
-      members: 1532,
-    },
-  ];
+      id: number;
+      name: string;
+      description: string;
+      link: string;
+    }[]
+  >([]);
+
+  function onCommunityAdd() {
+    setCommunities([
+      {
+        id: communities.length,
+        name: newCommunityName,
+        description: newCommunityDescription,
+        link: newCommunityLink.includes("http")
+          ? newCommunityLink
+          : "http://" + newCommunityLink,
+      },
+      ...communities,
+    ]);
+  }
 
   return (
     <Wrapper>
-      <SubmitButton>
+      <SubmitButton onClick={onCommunityAdd}>
         <svg
           fill="none"
           strokeWidth={1.5}
@@ -126,13 +122,48 @@ export default function Communicate() {
       </SubmitButton>
       <Header>Communities</Header>
       <CommunityWrapper>
+        <CommunityCard key={1}>
+          <CommunityTitle>
+            <TransparentInput
+              placeholder="Name"
+              value={newCommunityName}
+              onChange={(e) => {
+                setNewCommunityName(e.target.value);
+              }}
+            />
+          </CommunityTitle>
+          <CommunityDescription>
+            <TransparentInput
+              placeholder="Description"
+              value={newCommunityDescription}
+              onChange={(e) => {
+                setNewCommunityDescription(e.target.value);
+              }}
+            />
+          </CommunityDescription>
+          <CommunityInfo>
+            <Members>
+              <TransparentInput
+                placeholder="Link"
+                value={newCommunityLink}
+                onChange={(e) => {
+                  setNewCommunityLink(e.target.value);
+                }}
+              />
+            </Members>
+          </CommunityInfo>
+        </CommunityCard>
         {communities.map((community) => (
           <CommunityCard key={community.id}>
             <CommunityTitle>{community.name}</CommunityTitle>
             <CommunityDescription>{community.description}</CommunityDescription>
             <CommunityInfo>
-              <Members>{community.members} Members</Members>
-              <JoinButton>Join</JoinButton>
+              <Members>{community.link}</Members>
+              <form>
+                <JoinButton onClick={() => window.open(`${community.link}`)}>
+                  Join
+                </JoinButton>
+              </form>
             </CommunityInfo>
           </CommunityCard>
         ))}

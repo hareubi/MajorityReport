@@ -4,6 +4,7 @@ import { useState } from "react";
 import { auth, db } from "../../components/firebase";
 import { updateProfile } from "firebase/auth";
 import {
+  deleteDoc,
   doc,
   DocumentData,
   getDoc,
@@ -58,16 +59,18 @@ export default function Profile() {
     updateProfile(auth.currentUser, { displayName: userName });
     const docRef = doc(db, "profile", auth.currentUser.uid);
     const docSnapshot = await getDoc(docRef);
-    if (image) {
-      if (docSnapshot.exists()) {
-        updateDoc(docRef, {
-          image: image,
-        });
-      } else {
-        setDoc(docRef, {
-          image: image,
-        });
-      }
+    if (image === null) {
+      if (docSnapshot.exists()) deleteDoc(docRef);
+      return;
+    }
+    if (docSnapshot.exists()) {
+      updateDoc(docRef, {
+        image: image,
+      });
+    } else {
+      setDoc(docRef, {
+        image: image,
+      });
     }
     updateProfile(auth.currentUser, { displayName: userName });
   }
