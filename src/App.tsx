@@ -13,8 +13,8 @@ import ProtectedRoute from "./components/protected-route";
 import Profile from "./routes/profile/profile";
 import Communicate from "./routes/communicate/communicate";
 import Board from "./routes/board/board";
-import Planning from "./routes/planning";
-import ProjectSelector from "./routes/projects";
+import Planning from "./routes/planning/planning";
+import ProjectSelector from "./routes/projects/projects";
 
 const GlobalStyle = createGlobalStyle`
 ${reset};

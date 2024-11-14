@@ -1,5 +1,16 @@
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  limit,
+  orderBy,
+  query,
+} from "firebase/firestore";
 import { useState } from "react";
 import styled from "styled-components";
+import { db } from "../../components/firebase";
 
 const Wrapper = styled.div`
   display: flex;
@@ -79,19 +90,47 @@ export default function Communicate() {
   const [newCommunityName, setNewCommunityName] = useState("");
   const [newCommunityDescription, setNewCommunityDescription] = useState("");
   const [newCommunityLink, setNewCommunityLink] = useState("");
+  const [isLoaded, setIsLoaded] = useState(false);
   const [communities, setCommunities] = useState<
     {
-      id: number;
+      id: string;
       name: string;
       description: string;
       link: string;
     }[]
   >([]);
+  async function a() {
+    const docs = await getDocs(
+      query(collection(db, "communities"), orderBy("id"), limit(25))
+    );
+    setCommunities(
+      docs.docs.map((snapshot) => {
+        return {
+          id: snapshot.id,
+          name: snapshot.data().name,
+          description: snapshot.data().description,
+          link: snapshot.data().link,
+        };
+      })
+    );
+    setIsLoaded(true);
+  }
+  if (!isLoaded) {
+    a();
+  }
 
-  function onCommunityAdd() {
+  async function onCommunityAdd() {
+    const doc = await addDoc(collection(db, "communities"), {
+      id: communities.length,
+      name: newCommunityName,
+      description: newCommunityDescription,
+      link: newCommunityLink.includes("http")
+        ? newCommunityLink
+        : "http://" + newCommunityLink,
+    });
     setCommunities([
       {
-        id: communities.length,
+        id: doc.id,
         name: newCommunityName,
         description: newCommunityDescription,
         link: newCommunityLink.includes("http")
@@ -101,7 +140,10 @@ export default function Communicate() {
       ...communities,
     ]);
   }
-
+  function onDelete(id: string) {
+    deleteDoc(doc(db, "communities", id));
+    setIsLoaded(false);
+  }
   return (
     <Wrapper>
       <SubmitButton onClick={onCommunityAdd}>
@@ -155,13 +197,21 @@ export default function Communicate() {
         </CommunityCard>
         {communities.map((community) => (
           <CommunityCard key={community.id}>
-            <CommunityTitle>{community.name}</CommunityTitle>
+            <CommunityTitle>{community.name} </CommunityTitle>
             <CommunityDescription>{community.description}</CommunityDescription>
             <CommunityInfo>
               <Members>{community.link}</Members>
               <form>
                 <JoinButton onClick={() => window.open(`${community.link}`)}>
                   Join
+                </JoinButton>
+                <JoinButton
+                  onClick={(event) => {
+                    event.preventDefault();
+                    onDelete(community.id);
+                  }}
+                >
+                  Delete
                 </JoinButton>
               </form>
             </CommunityInfo>
