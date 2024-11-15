@@ -143,7 +143,7 @@ function PokerMainScreen() {
 }
 
 export default function Planning() {
-  const [isJoined, setJoined] = useState(true);
+  const [isJoined] = useState(true);
   return (
     <Container>
       <CollapseToggleButton hidden={!isJoined}>
