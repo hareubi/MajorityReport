@@ -1,73 +1,70 @@
 import { useState } from "react";
 import { styled } from "styled-components";
+import Card from "./Card";
+import { addDoc, collection } from "firebase/firestore";
+import { db } from "../../components/firebase";
 
-const BoardColumn = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin: 5px;
-  padding: 5px;
-  min-height: 80vh;
-  height: fit-content;
-  min-width: 300px;
-  width: fit-content;
-  background-color: white;
-`;
 const BoardWrapper = styled.div`
   display: flex;
   flex-direction: row;
   min-height: 90vh;
-  padding-top: 60px;
+  padding-top: 90px;
 `;
-const StoryAddButton = styled.button`
+const TopRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  background-color: white;
+  align-self: start;
+  position: fixed;
+  transform: translateY(-80px);
+`;
+const CardAddButton = styled.button`
   height: 50px;
   width: 50px;
   padding: 0;
-  margin-bottom: 10px;
-  align-self: start;
-  position: fixed;
-  transform: translateY(-50px);
 `;
 
 export default function Board() {
-  const [cardList, setCardList] = useState<
-    {
-      name: string;
-      description: string;
-    }[]
-  >([]);
+  const [cardName, setCardName] = useState("");
+  function onStoryAdd() {
+    if (cardName.trim() == "") return;
+    addDoc(collection(db, "board"), { name: cardName });
+    setCardName("");
+  }
   return (
     <BoardWrapper>
-      <StoryAddButton
-        onClick={() => {
-          setCardList([{ name: "Meow", description: "cat" }, ...cardList]);
-        }}
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth={1.5}
-          stroke="currentColor"
-          className="size-6"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
-          />
-        </svg>
-      </StoryAddButton>
-      {cardList.map((card) => {
-        return (
-          <BoardColumn>
-            <h1>{card.name}</h1>
-            <h1>{card.description}</h1>
-            {[0, 2, 2].map((value) => {
-              return <div>{value}</div>;
-            })}
-          </BoardColumn>
-        );
-      })}
+      <TopRow>
+        <CardAddButton onClick={onStoryAdd}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="size-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+            />
+          </svg>
+        </CardAddButton>
+        <ul>
+          <h1>
+            <input
+              type="text"
+              placeholder="meow?????"
+              value={cardName}
+              onChange={(event) => {
+                setCardName(event.target.value);
+              }}
+            />
+          </h1>
+        </ul>
+      </TopRow>
+
+      <Card />
     </BoardWrapper>
   );
 }

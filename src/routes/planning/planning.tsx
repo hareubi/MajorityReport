@@ -1,3 +1,4 @@
+import { useState } from "react";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -101,27 +102,11 @@ const RevealButton = styled.button`
   }
 `;
 
-export default function PlanningPoker() {
-  const cards = [1, 2, 3, 5, 8, 13, 21, "?"]; // Typical Fibonacci sequence options
-
+function PokerMainScreen() {
+  const [estimate, setEstimate] = useState(0);
+  const cards = [0, 1, 3, 5, 8, 999]; //
   return (
-    <Container>
-      <CollapseToggleButton>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth={1.5}
-          stroke="currentColor"
-          className="size-6"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
-          />
-        </svg>
-      </CollapseToggleButton>
+    <>
       <Header>
         <Title>Planning Poker</Title>
         <Subtitle>Select your estimate below</Subtitle>
@@ -131,15 +116,16 @@ export default function PlanningPoker() {
         <PlayerTitle>Players</PlayerTitle>
         <ul>
           <Player>Player 1 - Selected: 5</Player>
-          <Player>Player 2 - Selected: ?</Player>
+          <Player>Player 2 - Selected: {cards[estimate]}</Player>
           <Player>Player 3 - Selected: 8</Player>
-          {/* Add more players as needed */}
         </ul>
       </PlayerList>
 
       <CardOptions>
         {cards.map((card, index) => (
-          <Card key={index}>{card}</Card>
+          <Card key={index} onClick={() => setEstimate(index)}>
+            {card}
+          </Card>
         ))}
       </CardOptions>
 
@@ -152,6 +138,31 @@ export default function PlanningPoker() {
 
       {/* Reveal Button */}
       <RevealButton>Reveal Cards</RevealButton>
+    </>
+  );
+}
+
+export default function Planning() {
+  const [isJoined, setJoined] = useState(true);
+  return (
+    <Container>
+      <CollapseToggleButton hidden={!isJoined}>
+        <svg
+          fill="none"
+          stroke="#dc322f"
+          strokeWidth={1.5}
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75"
+          />
+        </svg>
+      </CollapseToggleButton>
+      {isJoined ? <PokerMainScreen /> : <h1>aaa</h1>}
     </Container>
   );
 }

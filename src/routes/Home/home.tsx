@@ -2,9 +2,9 @@ import { useState } from "react";
 import { auth, db } from "../../components/firebase.ts";
 import { todaysQuote } from "./quotes.ts";
 import IssueList from "../issues/issue-list.tsx";
-import Board from "../board/board.tsx";
 import styled from "styled-components";
 import { doc, DocumentData, getDoc } from "firebase/firestore";
+import Card from "../board/Card.tsx";
 const HomeWrapper = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -15,7 +15,8 @@ const HomeWrapper = styled.div`
 export default function Home() {
   const [time, setTime] = useState("");
   const [timer, setTimer] = useState<NodeJS.Timeout>();
-  const [profileImage, setProfileImage] = useState("");
+  const [profileImage, setProfileImage] = useState<string | null>(null);
+
   if (timer == null) {
     const hour = String(new Date().getHours()).padStart(2, "0");
     const minute = String(new Date().getMinutes()).padStart(2, "0");
@@ -30,16 +31,17 @@ export default function Home() {
       }, 900)
     );
   }
-  const doca = getDoc(doc(db, "profile", auth.currentUser?.uid ?? " "));
-  doca.then((snapshot) => {
-    if (!snapshot.data()) return;
-    const { image } = snapshot.data() as DocumentData;
-    if (image !== "") {
+  if (auth.currentUser !== null && profileImage === null) {
+    const doca = getDoc(doc(db, "profile", auth.currentUser?.uid ?? " "));
+    doca.then((snapshot) => {
+      if (!snapshot.data()) {
+        setProfileImage(auth.currentUser?.photoURL ?? "wth");
+        return;
+      }
+      const { image } = snapshot.data() as DocumentData;
       setProfileImage(image);
-    } else {
-      setProfileImage(auth.currentUser?.photoURL ?? "");
-    }
-  });
+    });
+  }
 
   return (
     <ul>
@@ -47,15 +49,16 @@ export default function Home() {
         <div>
           <h2>
             {time} welcome, {auth.currentUser?.displayName}
-            <img src={profileImage} />
+            <img src={profileImage ?? " "} />
           </h2>
         </div>
         <div></div>
         <div>
           <IssueList />
         </div>
-
-        <Board />
+        <div>
+          <Card />
+        </div>
       </HomeWrapper>
       <div>
         <footer>
