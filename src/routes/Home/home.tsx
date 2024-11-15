@@ -4,7 +4,7 @@ import { todaysQuote } from "./quotes.ts";
 import IssueList from "../issues/issue-list.tsx";
 import styled from "styled-components";
 import { doc, DocumentData, getDoc } from "firebase/firestore";
-import Card from "../board/Card.tsx";
+import Card from "../board/card.tsx";
 const HomeWrapper = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
