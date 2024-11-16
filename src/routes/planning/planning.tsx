@@ -1,5 +1,16 @@
-import { useState } from "react";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  limit,
+  onSnapshot,
+  query,
+  setDoc,
+  Unsubscribe,
+} from "firebase/firestore";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
+import { auth, db } from "../../components/firebase";
 
 const Container = styled.div`
   display: flex;
@@ -102,51 +113,51 @@ const RevealButton = styled.button`
   }
 `;
 
-function PokerMainScreen() {
-  const [estimate, setEstimate] = useState(0);
-  const cards = [0, 1, 3, 5, 8, 999]; //
-  return (
-    <>
-      <Header>
-        <Title>Planning Poker</Title>
-        <Subtitle>Select your estimate below</Subtitle>
-      </Header>
-
-      <PlayerList>
-        <PlayerTitle>Players</PlayerTitle>
-        <ul>
-          <Player>Player 1 - Selected: 5</Player>
-          <Player>Player 2 - Selected: {cards[estimate]}</Player>
-          <Player>Player 3 - Selected: 8</Player>
-        </ul>
-      </PlayerList>
-
-      <CardOptions>
-        {cards.map((card, index) => (
-          <Card key={index} onClick={() => setEstimate(index)}>
-            {card}
-          </Card>
-        ))}
-      </CardOptions>
-
-      <SelectedCardDisplay>
-        <SelectedTitle>Your Selection</SelectedTitle>
-        <SelectedPlaceholder>
-          (Card selection will be displayed here)
-        </SelectedPlaceholder>
-      </SelectedCardDisplay>
-
-      {/* Reveal Button */}
-      <RevealButton>Reveal Cards</RevealButton>
-    </>
-  );
-}
-
 export default function Planning() {
+  const [estimateList, setEstimateList] = useState<
+    {
+      name: string;
+      id: string;
+      estimate: number;
+    }[]
+  >([]);
+  const [estimate, setEstimate] = useState(0);
+  const cards = [0, 1, 3, 5, 8, 999];
   const [isJoined] = useState(true);
+
+  let unSubscribe: Unsubscribe | null = null;
+  const fetchIssues = async () => {
+    const boardQuery = query(collection(db, "planning"), limit(25));
+    unSubscribe = onSnapshot(boardQuery, (snapshot) => {
+      const newCardList = snapshot.docs.map((doc) => {
+        const { name, estimate } = doc.data();
+        return {
+          name: name,
+          id: doc.id,
+          estimate: estimate,
+        };
+      });
+      if (estimateList !== newCardList) {
+        setEstimateList(newCardList);
+      }
+    });
+  };
+  useEffect(() => {
+    fetchIssues();
+    return () => {
+      unSubscribe?.();
+    };
+  });
   return (
     <Container>
-      <CollapseToggleButton hidden={!isJoined}>
+      <CollapseToggleButton
+        hidden={!isJoined}
+        onClick={() =>
+          estimateList.map((estimateData) =>
+            deleteDoc(doc(db, "planning", estimateData.id))
+          )
+        }
+      >
         <svg
           fill="none"
           stroke="#dc322f"
@@ -162,7 +173,52 @@ export default function Planning() {
           />
         </svg>
       </CollapseToggleButton>
-      {isJoined ? <PokerMainScreen /> : <h1>aaa</h1>}
+      {isJoined ? (
+        <>
+          <Header>
+            <Title>Planning Poker</Title>
+            <Subtitle>Select your estimate below</Subtitle>
+          </Header>
+
+          <PlayerList>
+            <PlayerTitle>Players</PlayerTitle>
+            <ul>
+              {estimateList.map((estimateData) => (
+                <Player>
+                  {estimateData.name} - Selected: {cards[estimateData.estimate]}
+                </Player>
+              ))}
+            </ul>
+          </PlayerList>
+
+          <CardOptions>
+            {cards.map((card, index) => (
+              <Card key={index} onClick={() => setEstimate(index)}>
+                {card}
+              </Card>
+            ))}
+          </CardOptions>
+
+          <SelectedCardDisplay>
+            <SelectedTitle>Your Selection</SelectedTitle>
+            <SelectedPlaceholder>{cards[estimate]}</SelectedPlaceholder>
+          </SelectedCardDisplay>
+
+          {/* Reveal Button */}
+          <RevealButton
+            onClick={() =>
+              setDoc(doc(db, "planning", auth.currentUser?.uid ?? " "), {
+                name: auth.currentUser?.displayName,
+                estimate: estimate,
+              })
+            }
+          >
+            Reveal Cards
+          </RevealButton>
+        </>
+      ) : (
+        <h1>aaa</h1>
+      )}
     </Container>
   );
 }
